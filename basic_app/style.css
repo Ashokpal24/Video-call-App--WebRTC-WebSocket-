@@ -1,6 +1,91 @@
-.v-container {
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.video-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+}
+
+.video-wrapper {
+    position: relative;
+}
+
+.video-wrapper p {
+    text-align: center;
+    margin: 5px 0;
+}
+
+video {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+}
+
+.controls {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.room-info {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+button {
+    max-width: 200px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.error {
+    color: red;
+    text-align: center;
+}
+
+#hangupBtn {
+    background-color: #dc3545;
+}
+
+#hangupBtn:hover {
+    background-color: #c82333;
 }

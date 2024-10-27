@@ -9,14 +9,30 @@
 </head>
 
 <body>
-    <h1>Video chat app</h1>
-    <!-- <div class="v-container">
-        <video id="localclient" autoplay playsinline />
-        <video id="remoteclient" autoplay playsinline />
-    </div> -->
-    <input id="msg-input" type="text" />
+    <h1>Video Call App</h1>
+    <div class="video-container">
+        <div>
+            <video id="localVideo" autoplay playsinline muted></video>
+            <p>Local video</p>
+        </div>
+        <div>
+            <video id="remoteVideo" autoplay playsinline></video>
+            <p>Remote Video</p>
+        </div>
+    </div>
+    <div class="controls">
+        <button id="createBtn">Create Room</button>
+        <div class="room-info">
+            <input id="roomInput" type="text" placeholder="Enter Room ID">
+            <button id="copyBtn" style="display: none;">Copy ID</button>
+        </div>
+        <button id="joinBtn">Join Room</button>
+        <button id="hangupBtn" style="display:none;">Hang Up</button>
+    </div>
+    <p id="errorMsg" class="error"></p>
+    <!-- <input id="msg-input" type="text" />
     <button onclick="sendMessage()">Send</button>
-    <div id="show-message"></div>
+    <div id="show-message"></div> -->
     <script src="main.js"></script>
 </body>
 
