@@ -1,9 +1,12 @@
 {
   "dependencies": {
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
     "uuid": "^10.0.0",
     "ws": "^8.18.0"
   },
   "scripts": {
-    "server:start":"node server/server.js"
+    "client": "nodemon server/client.js",
+    "server": "nodemon server/server.js"
   }
 }

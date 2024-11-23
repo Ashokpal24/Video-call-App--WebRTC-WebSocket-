@@ -16,28 +16,40 @@ const hangupBtn = document.getElementById("hangupBtn");
 const roomInput = document.getElementById("roomInput");
 const copyBtn = document.getElementById("copyBtn");
 const errorMsg = document.getElementById("errorMsg");
-
+let dataChannel;
 async function setupPeerConnection() {
   try {
-    localStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-    localVideo.srcObject = localStream;
+    // localStream = await navigator.mediaDevices.getUserMedia({
+    //   video: true,
+    //   audio: true,
+    // });
+    // localVideo.srcObject = localStream;
     peerConnection = new RTCPeerConnection(configuration);
-
+    dataChannel = peerConnection.createDataChannel("msg");
+    dataChannel.onopen = () => console.log("Data channel created");
+    dataChannel.onmessage = (message) => console.log(message);
+    dataChannel.onclose = () => console.log("Data channel closes");
+    dataChannel.onerror = (err) => console.log(err);
     // add media track to send to peer
-    localStream.getTracks().forEach((track) => {
-      peerConnection.addTrack(track, localStream);
-    });
+    // localStream.getTracks().forEach((track) => {
+    //   peerConnection.addTrack(track, localStream);
+    // });
 
-    // if track is received from peer add to remoteVideo HTML component
-    peerConnection.ontrack = (event) => {
-      console.log("received track", event.streams);
-      remoteVideo.srcObject = event.streams[0];
-      showControls(true);
+    // // if track is received from peer add to remoteVideo HTML component
+    // peerConnection.ontrack = (event) => {
+    //   console.log("received track", event.streams);
+    //   remoteVideo.srcObject = event.streams[0];
+    //   showControls(true);
+    // };
+    peerConnection.ondatachannel = (event) => {
+      dataChannel = event.channel;
+      if (dataChannel) {
+        dataChannel.onopen = () => console.log("Data channel created");
+        dataChannel.onmessage = (message) => console.log(message);
+        dataChannel.onclose = () => console.log("Data channel closes");
+        dataChannel.onerror = (err) => console.log(err);
+      }
     };
-
     peerConnection.onicecandidate = (event) => {
       if (event.candidate) {
         console.log("local ICE candidate", isCaller);
@@ -60,6 +72,9 @@ async function setupPeerConnection() {
         console.log("connection failed");
       }
     };
+    document.addEventListener("keypress", (event) => {
+      if (dataChannel) dataChannel.send(event.key);
+    });
   } catch (error) {
     showError(error.message);
   }
@@ -159,13 +174,13 @@ function hangup() {
     peerConnection.close();
     peerConnection = null;
   }
-  if (localStream) {
-    localStream.getTracks().forEach((track) => track.stop());
-  }
-  socket.close();
-  localVideo.srcObject = null;
-  remoteVideo.srcObject = null;
-  showControls(false);
+  // if (localStream) {
+  //   localStream.getTracks().forEach((track) => track.stop());
+  // }
+  // socket.close();
+  // localVideo.srcObject = null;
+  // remoteVideo.srcObject = null;
+  // showControls(false);
 }
 
 function showControls(inCall) {
@@ -184,7 +199,7 @@ function showError(message) {
 
 function connectWebSocket() {
   socket = new WebSocket(
-    "wss://squalid-spooky-superstition-qgpxggv499p2wg9-8080.app.github.dev"
+    "wss://legendary-disco-674p77v5r5j346wp-8080.app.github.dev"
   );
   socket.onmessage = async (event) => {
     const message = JSON.parse(event.data);
